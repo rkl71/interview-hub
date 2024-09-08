@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
  * ${dataName}接口
  *
  * @author <a href="https://github.com/rkl71">renkelin</a>
- * @from <a href="https://www.code-nav.cn">编程导航学习圈</a>
+ * @from <a href="https://www.renkelin.vip">Kolin's space</a>
  */
 @RestController
 @RequestMapping("/${dataKey}")

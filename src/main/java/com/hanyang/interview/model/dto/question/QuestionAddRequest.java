@@ -1,4 +1,4 @@
-package ${packageName}.model.dto.${dataKey};
+package com.hanyang.interview.model.dto.question;
 
 import lombok.Data;
 
@@ -6,18 +6,13 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 更新${dataName}请求
+ * 创建题目请求
  *
  * @author <a href="https://github.com/rkl71">renkelin</a>
  * @from <a href="https://www.renkelin.vip">Kolin's space</a>
  */
 @Data
-public class ${upperDataKey}UpdateRequest implements Serializable {
-
-    /**
-     * id
-     */
-    private Long id;
+public class QuestionAddRequest implements Serializable {
 
     /**
      * 标题
@@ -33,6 +28,11 @@ public class ${upperDataKey}UpdateRequest implements Serializable {
      * 标签列表
      */
     private List<String> tags;
+
+    /**
+     * 推荐答案
+     */
+    private String answer;
 
     private static final long serialVersionUID = 1L;
 }

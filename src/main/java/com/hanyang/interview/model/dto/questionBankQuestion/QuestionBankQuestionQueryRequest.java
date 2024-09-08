@@ -1,6 +1,6 @@
-package ${packageName}.model.dto.${dataKey};
+package com.hanyang.interview.model.dto.questionBankQuestion;
 
-import ${packageName}.common.PageRequest;
+import com.hanyang.interview.common.PageRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -8,14 +8,14 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 查询${dataName}请求
+ * 查询题库题目关联请求
  *
  * @author <a href="https://github.com/rkl71">renkelin</a>
  * @from <a href="https://www.renkelin.vip">Kolin's space</a>
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ${upperDataKey}QueryRequest extends PageRequest implements Serializable {
+public class QuestionBankQuestionQueryRequest extends PageRequest implements Serializable {
 
     /**
      * id
@@ -28,24 +28,14 @@ public class ${upperDataKey}QueryRequest extends PageRequest implements Serializ
     private Long notId;
 
     /**
-     * 搜索词
+     * 题库 id
      */
-    private String searchText;
+    private Long questionBankId;
 
     /**
-     * 标题
+     * 题目 id
      */
-    private String title;
-
-    /**
-     * 内容
-     */
-    private String content;
-
-    /**
-     * 标签列表
-     */
-    private List<String> tags;
+    private Long questionId;
 
     /**
      * 创建用户 id

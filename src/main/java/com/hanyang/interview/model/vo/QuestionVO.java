@@ -1,7 +1,7 @@
-package ${packageName}.model.vo;
+package com.hanyang.interview.model.vo;
 
 import cn.hutool.json.JSONUtil;
-import ${packageName}.model.entity.${upperDataKey};
+import com.hanyang.interview.model.entity.Question;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
@@ -10,13 +10,13 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * ${dataName}视图
+ * 题目视图
  *
  * @author <a href="https://github.com/rkl71">renkelin</a>
  * @from <a href="https://www.renkelin.vip">Kolin's space</a>
  */
 @Data
-public class ${upperDataKey}VO implements Serializable {
+public class QuestionVO implements Serializable {
 
     /**
      * id
@@ -32,6 +32,11 @@ public class ${upperDataKey}VO implements Serializable {
      * 内容
      */
     private String content;
+
+    /**
+     * 推荐答案
+     */
+    private String answer;
 
     /**
      * 创建用户 id
@@ -61,33 +66,33 @@ public class ${upperDataKey}VO implements Serializable {
     /**
      * 封装类转对象
      *
-     * @param ${dataKey}VO
+     * @param questionVO
      * @return
      */
-    public static ${upperDataKey} voToObj(${upperDataKey}VO ${dataKey}VO) {
-        if (${dataKey}VO == null) {
+    public static Question voToObj(QuestionVO questionVO) {
+        if (questionVO == null) {
             return null;
         }
-        ${upperDataKey} ${dataKey} = new ${upperDataKey}();
-        BeanUtils.copyProperties(${dataKey}VO, ${dataKey});
-        List<String> tagList = ${dataKey}VO.getTagList();
-        ${dataKey}.setTags(JSONUtil.toJsonStr(tagList));
-        return ${dataKey};
+        Question question = new Question();
+        BeanUtils.copyProperties(questionVO, question);
+        List<String> tagList = questionVO.getTagList();
+        question.setTags(JSONUtil.toJsonStr(tagList));
+        return question;
     }
 
     /**
      * 对象转封装类
      *
-     * @param ${dataKey}
+     * @param question
      * @return
      */
-    public static ${upperDataKey}VO objToVo(${upperDataKey} ${dataKey}) {
-        if (${dataKey} == null) {
+    public static QuestionVO objToVo(Question question) {
+        if (question == null) {
             return null;
         }
-        ${upperDataKey}VO ${dataKey}VO = new ${upperDataKey}VO();
-        BeanUtils.copyProperties(${dataKey}, ${dataKey}VO);
-        ${dataKey}VO.setTagList(JSONUtil.toList(${dataKey}.getTags(), String.class));
-        return ${dataKey}VO;
+        QuestionVO questionVO = new QuestionVO();
+        BeanUtils.copyProperties(question, questionVO);
+        questionVO.setTagList(JSONUtil.toList(question.getTags(), String.class));
+        return questionVO;
     }
 }
