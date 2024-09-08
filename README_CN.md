@@ -1,5 +1,20 @@
-# 🛰️面试空间站
+<p align="center">
+  <img src="https://kolin-blog.oss-cn-shanghai.aliyuncs.com/blog/202409090007739.png" width='200'>
+</p>
 
+<div align="center">
+
+# 面试空间站
+
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable-next-line MD036 -->
+_✨ 您值得信赖的面试助手! ✨_
+<!-- prettier-ignore-end -->
+
+</div>
+
+
+[English Doc](./README_EN.md) | [中文文档](./README_CN.md)
 
 
 ## 🔖简介
