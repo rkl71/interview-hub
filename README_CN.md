@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://kolin-blog.oss-cn-shanghai.aliyuncs.com/blog/202409090007739.png" width='200'>
+  <img src="https://kolin-blog.oss-cn-shanghai.aliyuncs.com/blog/202409142134902.png" width='200'>
 </p>
 
 <div align="center">
