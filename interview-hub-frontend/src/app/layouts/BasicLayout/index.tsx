@@ -13,8 +13,9 @@ import Link from "next/link";
 import GlobalFooter from "@/components/GlobalFooter";
 import { menus } from "../../../../config/menu";
 import "./index.css";
-import {useSelector} from "react-redux";
-import {RootState} from "@/stores";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores";
+import getAccessibleMenus from "@/access/menuAccess";
 
 /**
  * 搜索条
@@ -60,7 +61,8 @@ interface Props {
 export default function BasicLayout({ children }: Props) {
   const pathname = usePathname();
 
-    const loginUser = useSelector((state: RootState) => state.loginUser);
+  // 当前登录用户
+  const loginUser = useSelector((state: RootState) => state.loginUser);
 
   return (
     <div
@@ -134,7 +136,7 @@ export default function BasicLayout({ children }: Props) {
         onMenuHeaderClick={(e) => console.log(e)}
         // 定义有哪些菜单
         menuDataRender={() => {
-          return menus;
+          return getAccessibleMenus(loginUser, menus);
         }}
         // 定义了菜单项如何渲染
         menuItemRender={(item, dom) => (
