@@ -1,5 +1,5 @@
 "use client";
-import BasicLayout from "@/app/layouts/BasicLayout";
+import BasicLayout from "@/layouts/BasicLayout";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import React, { useCallback, useEffect } from "react";
 import { Provider, useDispatch } from "react-redux";
@@ -7,6 +7,7 @@ import store, { AppDispatch } from "@/stores";
 import "./globals.css";
 import { getLoginUserUsingGet } from "@/api/userController";
 import AccessLayout from "@/access/AccessLayout";
+import { setLoginUser } from "@/stores/loginUser";
 
 /**
  * 全局初始化逻辑
@@ -24,6 +25,7 @@ const InitLayout: React.FC<
     const res = await getLoginUserUsingGet();
     if (res.data) {
       // 更新全局用户状态
+      dispatch(setLoginUser(res.data));
     } else {
       // 仅用于测试
       // setTimeout(() => {
