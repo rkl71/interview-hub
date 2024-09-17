@@ -8,7 +8,7 @@ import {
 import { PlusOutlined } from "@ant-design/icons";
 import type { ActionType, ProColumns } from "@ant-design/pro-components";
 import { PageContainer, ProTable } from "@ant-design/pro-components";
-import { Button, message, Space, Typography } from "antd";
+import { Button, message, Space, Typography, Modal } from "antd"; // 引入Modal
 import React, { useRef, useState } from "react";
 
 /**
@@ -45,6 +45,22 @@ const UserAdminPage: React.FC = () => {
       message.error("删除失败，" + error.message);
       return false;
     }
+  };
+
+  /**
+   * 确认删除弹窗
+   *
+   * @param row
+   */
+  const confirmDelete = (row: API.User) => {
+    Modal.confirm({
+      title: "确认删除",
+      content: "你确定要删除此用户吗？此操作无法撤销。",
+      okText: "确认",
+      okType: "danger",
+      cancelText: "取消",
+      onOk: () => handleDelete(row),
+    });
   };
 
   /**
@@ -123,7 +139,7 @@ const UserAdminPage: React.FC = () => {
           >
             修改
           </Typography.Link>
-          <Typography.Link type="danger" onClick={() => handleDelete(record)}>
+          <Typography.Link type="danger" onClick={() => confirmDelete(record)}>
             删除
           </Typography.Link>
         </Space>
