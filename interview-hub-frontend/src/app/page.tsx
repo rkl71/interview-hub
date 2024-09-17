@@ -15,26 +15,27 @@ import "./index.css";
 export default async function HomePage() {
   let questionBankList = [];
   let questionList = [];
-  try {
-    const res = await listQuestionBankVoByPageUsingPost({
-      pageSize: 12,
-      sortField: "createTime",
-      sortOrder: "descend",
-    });
-    questionBankList = res.data.records ?? [];
-  } catch (e) {
-    message.error("获取题库列表失败，" + e.message);
-  }
 
   try {
-    const res = await listQuestionVoByPageUsingPost({
-      pageSize: 12,
-      sortField: "createTime",
-      sortOrder: "descend",
-    });
-    questionList = res.data.records ?? [];
+    // 并发调用两个接口，使用 Promise.all
+    const [questionBankRes, questionRes] = await Promise.all([
+      listQuestionBankVoByPageUsingPost({
+        pageSize: 12,
+        sortField: "createTime",
+        sortOrder: "descend",
+      }),
+      listQuestionVoByPageUsingPost({
+        pageSize: 12,
+        sortField: "createTime",
+        sortOrder: "descend",
+      }),
+    ]);
+
+    // 处理返回的数据
+    questionBankList = questionBankRes.data.records ?? [];
+    questionList = questionRes.data.records ?? [];
   } catch (e) {
-    message.error("获取题目列表失败，" + e.message);
+    message.error("获取数据失败，" + e.message);
   }
 
   return (
