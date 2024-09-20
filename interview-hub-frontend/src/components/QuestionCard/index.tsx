@@ -4,6 +4,7 @@ import Title from "antd/es/typography/Title";
 import TagList from "@/components/TagList";
 import MdViewer from "@/components/MdViewer";
 import "./index.css";
+import useAddUserCheckInRecord from "@/app/hooks/useAddUserCheckInRecord";
 
 interface Props {
   question: API.QuestionVO;
@@ -16,6 +17,9 @@ interface Props {
  */
 const QuestionCard = (props: Props) => {
   const { question } = props;
+
+    // 签到
+    useAddUserCheckInRecord();
 
   return (
     <div className="question-card">
