@@ -10,10 +10,7 @@ import com.hanyang.interview.common.ResultUtils;
 import com.hanyang.interview.constant.UserConstant;
 import com.hanyang.interview.exception.BusinessException;
 import com.hanyang.interview.exception.ThrowUtils;
-import com.hanyang.interview.model.dto.question.QuestionAddRequest;
-import com.hanyang.interview.model.dto.question.QuestionEditRequest;
-import com.hanyang.interview.model.dto.question.QuestionQueryRequest;
-import com.hanyang.interview.model.dto.question.QuestionUpdateRequest;
+import com.hanyang.interview.model.dto.question.*;
 import com.hanyang.interview.model.entity.Question;
 import com.hanyang.interview.model.entity.User;
 import com.hanyang.interview.model.vo.QuestionVO;
@@ -21,6 +18,7 @@ import com.hanyang.interview.service.QuestionService;
 import com.hanyang.interview.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -43,6 +41,9 @@ public class QuestionController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private ElasticsearchRestTemplate elasticsearchRestTemplate;
 
     // region 增删改查
 
@@ -251,4 +252,46 @@ public class QuestionController {
     }
 
     // endregion
+
+    @PostMapping("/search/page/vo")
+    public BaseResponse<Page<QuestionVO>> searchQuestionVOByPage(@RequestBody QuestionQueryRequest questionQueryRequest,
+                                                                 HttpServletRequest request) {
+        long size = questionQueryRequest.getPageSize();
+        // 限制爬虫
+        ThrowUtils.throwIf(size > 200, ErrorCode.PARAMS_ERROR);
+
+        Page<Question> questionPage;
+        try {
+            // 检查 ES 是否已正确初始化，若未初始化则直接切换至数据库查询
+            if (!esClientIsInitialized()) {
+                throw new RuntimeException("ES client not initialized");
+            }
+
+            // 尝试从 ES 中查询
+            questionPage = questionService.searchFromEs(questionQueryRequest);
+        } catch (Exception e) {
+            // 记录异常日志，便于排查 ES 问题
+            log.error("ES 查询失败，切换至数据库查询: ", e);
+
+            // ES 查询失败时，降级为数据库查询
+            questionPage = questionService.searchFromDatabase(questionQueryRequest);
+        }
+
+        // 返回查询结果
+        return ResultUtils.success(questionService.getQuestionVOPage(questionPage, request));
+    }
+
+    /**
+     * 判断 ES 客户端是否初始化
+     */
+    private boolean esClientIsInitialized() {
+        try {
+            // 检查 Elasticsearch 是否可用
+            return elasticsearchRestTemplate.indexOps(QuestionEsDTO.class).exists();
+        } catch (Exception e) {
+            log.error("Elasticsearch client check failed", e);
+            return false;
+        }
+    }
+
 }
