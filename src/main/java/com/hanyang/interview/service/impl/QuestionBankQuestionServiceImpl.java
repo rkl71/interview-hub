@@ -303,4 +303,28 @@ public class QuestionBankQuestionServiceImpl extends ServiceImpl<QuestionBankQue
             throw new BusinessException(ErrorCode.OPERATION_ERROR, "向题库添加题目失败");
         }
     }
+
+    /**
+     * 批量从题库移除题目
+     *
+     * @param questionIdList
+     * @param questionBankId
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void batchRemoveQuestionsFromBank(List<Long> questionIdList, long questionBankId) {
+        // 参数校验
+        ThrowUtils.throwIf(CollUtil.isEmpty(questionIdList), ErrorCode.PARAMS_ERROR, "题目列表不能为空");
+        ThrowUtils.throwIf(questionBankId <= 0, ErrorCode.PARAMS_ERROR, "题库 id 非法");
+        // 执行删除关联
+        for (long questionId : questionIdList) {
+            // 构造查询
+            LambdaQueryWrapper<QuestionBankQuestion> lambdaQueryWrapper = Wrappers.lambdaQuery(QuestionBankQuestion.class)
+                    .eq(QuestionBankQuestion::getQuestionId, questionId)
+                    .eq(QuestionBankQuestion::getQuestionBankId, questionBankId);
+            boolean result = this.remove(lambdaQueryWrapper);
+            ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "从题库移除题目失败");
+        }
+    }
+
 }
