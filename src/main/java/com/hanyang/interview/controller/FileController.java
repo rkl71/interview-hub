@@ -1,6 +1,6 @@
 package com.hanyang.interview.controller;
 
-import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.file.FileNameUtil;
 import com.hanyang.interview.common.BaseResponse;
 import com.hanyang.interview.common.ErrorCode;
 import com.hanyang.interview.common.ResultUtils;
@@ -94,7 +94,7 @@ public class FileController {
         // 文件大小
         long fileSize = multipartFile.getSize();
         // 文件后缀
-        String fileSuffix = FileUtil.getSuffix(multipartFile.getOriginalFilename());
+        String fileSuffix = FileNameUtil.getSuffix(multipartFile.getOriginalFilename());
         final long ONE_M = 1024 * 1024L;
         if (FileUploadBizEnum.USER_AVATAR.equals(fileUploadBizEnum)) {
             if (fileSize > ONE_M) {
